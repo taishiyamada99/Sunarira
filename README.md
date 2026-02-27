@@ -1,4 +1,4 @@
-# Sunarira v0.2
+# Sunarira v0.2.0
 
 macOS menu bar app that transforms focused text in place using App Server stdio JSON-RPC.
 
