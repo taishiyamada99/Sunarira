@@ -17,6 +17,20 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
             }
 
+            Section(sectionStartup) {
+                Toggle(toggleLaunchAtLogin, isOn: launchAtLoginBinding)
+
+                Text(hintLaunchAtLogin)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                if let statusMessage = appState.launchAtLoginStatusMessage {
+                    Text(statusMessage)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             Section(sectionModes) {
                 HStack {
                     Text("\(labelCurrentMode): \(appState.activeMode.displayName)")
@@ -123,15 +137,9 @@ struct SettingsView: View {
             }
 
             Section(sectionAccessibility) {
-                let trusted = accessibilityService.isTrusted(promptIfNeeded: false)
-                Text(accessibilityStatusText(trusted))
-                HStack {
-                    Button(buttonOpenAccessibilitySettings) {
-                        accessibilityService.openAccessibilitySettings()
-                    }
-                    Button(buttonCheckAccessibilityAgain) {
-                        _ = accessibilityService.isTrusted(promptIfNeeded: true)
-                    }
+                Text(accessibilityStatusText(appState.accessibilityTrusted))
+                Button(buttonOpenAccessibilitySettings) {
+                    accessibilityService.openAccessibilitySettings()
                 }
             }
 
@@ -231,10 +239,24 @@ struct SettingsView: View {
                     .frame(minHeight: 180, maxHeight: 260)
                 }
             }
+
+            Section(sectionAbout) {
+                HStack {
+                    Text(labelVersion)
+                    Spacer()
+                    Text(appVersionDisplayText)
+                        .font(.system(.body, design: .monospaced))
+                        .textSelection(.enabled)
+                }
+            }
         }
         .formStyle(.grouped)
         .padding(12)
-        .frame(minWidth: 760, minHeight: showAdminSettings ? 860 : 700)
+        .frame(minWidth: 760, minHeight: showAdminSettings ? 920 : 760)
+        .onAppear {
+            appState.refreshLaunchAtLoginState()
+            appState.refreshAccessibilityTrustStatus()
+        }
     }
 
     private func binding<T>(_ keyPath: WritableKeyPath<AppPreferences, T>) -> Binding<T> {
@@ -283,20 +305,34 @@ struct SettingsView: View {
         )
     }
 
+    private var launchAtLoginBinding: Binding<Bool> {
+        Binding(
+            get: { appState.preferences.launchAtLogin },
+            set: { newValue in
+                appState.setLaunchAtLoginEnabled(newValue)
+            }
+        )
+    }
+
     private var sectionInterface: String { t("Interface", "表示", "Sprache", "Idioma", "Langue") }
+    private var sectionStartup: String { t("Startup", "起動", "Start", "Inicio", "Démarrage") }
     private var sectionModes: String { t("Transform Modes", "変換モード", "Transformationsmodi", "Modos de transformación", "Modes de transformation") }
     private var sectionEndpoint: String { t("App Server", "App Server", "App Server", "App Server", "App Server") }
     private var sectionShortcuts: String { t("Keyboard Shortcuts", "キーボードショートカット", "Tastaturkurzbefehle", "Atajos de teclado", "Raccourcis clavier") }
     private var sectionAccessibility: String { t("Accessibility", "アクセシビリティ", "Bedienungshilfen", "Accesibilidad", "Accessibilité") }
     private var sectionAdminMode: String { t("Administrator Mode", "管理者モード", "Administratormodus", "Modo administrador", "Mode administrateur") }
     private var sectionLogs: String { t("Logs", "ログ", "Protokolle", "Registros", "Journaux") }
+    private var sectionAbout: String { t("About", "バージョン情報", "Über", "Acerca de", "À propos") }
 
     private var labelLanguage: String { t("Language", "言語", "Sprache", "Idioma", "Langue") }
+    private var labelVersion: String { t("Version", "バージョン", "Version", "Versión", "Version") }
     private var labelMode: String { t("Mode", "モード", "Modus", "Modo", "Mode") }
     private var labelCurrentMode: String { t("Current mode", "現在モード", "Aktueller Modus", "Modo actual", "Mode actuel") }
     private var labelDisplayName: String { t("Display name", "表示名", "Anzeigename", "Nombre visible", "Nom d'affichage") }
     private var labelPrompt: String { t("Prompt template", "プロンプト", "Prompt-Vorlage", "Plantilla de prompt", "Modèle de prompt") }
     private var labelModel: String { t("Model", "モデル", "Modell", "Modelo", "Modèle") }
+    private var toggleLaunchAtLogin: String { t("Launch at login", "Mac起動時に開始", "Beim Anmelden starten", "Iniciar al iniciar sesión", "Lancer à la connexion") }
+    private var hintLaunchAtLogin: String { t("When enabled, Sunarira starts automatically after you log in to your Mac.", "有効にすると、Macへのログイン後に Sunarira が自動起動します。", "Wenn aktiviert, startet Sunarira automatisch nach der Anmeldung am Mac.", "Si está activado, Sunarira se inicia automáticamente después de iniciar sesión en tu Mac.", "Si activé, Sunarira démarre automatiquement après l'ouverture de session sur votre Mac.") }
     private var hintShortcutPerMode: String { t("Assign one keyboard shortcut per mode. Pressing a keyboard shortcut switches to that mode and runs transform.", "モードごとに1つのキーボードショートカットを割り当てできます。押すとそのモードに切り替えて変換を実行します。", "Weisen Sie jedem Modus einen Tastaturkurzbefehl zu. Beim Drücken wird zu diesem Modus gewechselt und die Umformung ausgeführt.", "Asigna un atajo de teclado por modo. Al pulsarlo se cambia a ese modo y se ejecuta la transformación.", "Attribuez un raccourci clavier par mode. En l'appuyant, l'application bascule vers ce mode et lance la transformation.") }
     private var recordingShortcutLabel: String { t("Press keyboard shortcut...", "キーボードショートカットを押してください...", "Tastaturkurzbefehl drücken...", "Pulsa el atajo de teclado...", "Appuyez sur le raccourci clavier...") }
 
@@ -317,7 +353,6 @@ struct SettingsView: View {
     private var hintAdminModeDisabled: String { t("Open administrator mode to manage App Server and log details.", "App Server やログ詳細を扱うには管理者モードを開いてください。", "Öffnen Sie den Administratormodus, um App Server und Protokolldetails zu verwalten.", "Abre el modo administrador para gestionar App Server y detalles de registros.", "Ouvrez le mode administrateur pour gérer App Server et les détails des journaux.") }
 
     private var buttonOpenAccessibilitySettings: String { t("Open Accessibility Settings", "アクセシビリティ設定を開く", "Bedienungshilfen öffnen", "Abrir ajustes de accesibilidad", "Ouvrir les réglages d'accessibilité") }
-    private var buttonCheckAccessibilityAgain: String { t("Check Again", "再確認", "Erneut prüfen", "Comprobar de nuevo", "Vérifier à nouveau") }
     private var toggleSensitiveLogText: String { t("Include input/output text in logs", "ログに入力/出力テキストを含める", "Eingabe-/Ausgabetext in Protokolle aufnehmen", "Incluir texto de entrada/salida en los registros", "Inclure le texte d'entrée/sortie dans les journaux") }
     private var hintSensitiveLogText: String { t("Off by default. Turn on only while debugging because logs may contain sensitive text.", "既定はオフです。機密テキストがログに含まれるため、デバッグ時のみオンにしてください。", "Standardmäßig aus. Nur zum Debuggen einschalten, da Protokolle sensible Texte enthalten können.", "Desactivado por defecto. Actívalo solo para depuración, ya que los registros pueden contener texto sensible.", "Désactivé par défaut. Activez-le uniquement pour le débogage, car les journaux peuvent contenir des textes sensibles.") }
     private var buttonRefreshLogs: String { t("Refresh Logs", "ログ再読み込み", "Protokolle aktualisieren", "Actualizar registros", "Actualiser les journaux") }
@@ -348,5 +383,11 @@ struct SettingsView: View {
         trusted
             ? t("Status: OK", "状態: 許可済み", "Status: OK", "Estado: OK", "État : OK")
             : t("Status: Not granted", "状態: 未許可", "Status: Nicht gewährt", "Estado: No concedido", "État : Non accordé")
+    }
+
+    private var appVersionDisplayText: String {
+        let shortVersion = (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? "0.2.2"
+        return "v\(shortVersion)"
     }
 }

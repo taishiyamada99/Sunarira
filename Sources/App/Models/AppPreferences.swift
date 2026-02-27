@@ -34,6 +34,7 @@ struct AppPreferences: Codable, Equatable {
     var transformModes: [TransformModePreset]
     var activeModeID: UUID
     var stdioCommand: String
+    var launchAtLogin: Bool
     var hotkeys: [HotkeyAction: Hotkey]
     var includeSensitiveTextInLogs: Bool
 
@@ -43,6 +44,7 @@ struct AppPreferences: Codable, Equatable {
         transformModes: [TransformModePreset],
         activeModeID: UUID,
         stdioCommand: String,
+        launchAtLogin: Bool,
         hotkeys: [HotkeyAction: Hotkey],
         includeSensitiveTextInLogs: Bool
     ) {
@@ -51,6 +53,7 @@ struct AppPreferences: Codable, Equatable {
         self.transformModes = AppPreferences.normalizedModes(transformModes)
         self.activeModeID = activeModeID
         self.stdioCommand = stdioCommand
+        self.launchAtLogin = launchAtLogin
         self.hotkeys = hotkeys
         self.includeSensitiveTextInLogs = includeSensitiveTextInLogs
         sanitizeActiveMode()
@@ -63,6 +66,7 @@ struct AppPreferences: Codable, Equatable {
             transformModes: modes,
             activeModeID: modes[0].id,
             stdioCommand: "codex app-server --listen stdio://",
+            launchAtLogin: false,
             hotkeys: defaultHotkeys(),
             includeSensitiveTextInLogs: false
         )
@@ -74,6 +78,7 @@ struct AppPreferences: Codable, Equatable {
         case transformModes
         case activeModeID
         case stdioCommand
+        case launchAtLogin
         case hotkeys
         case includeSensitiveTextInLogs
     }
@@ -96,6 +101,7 @@ struct AppPreferences: Codable, Equatable {
         )
         activeModeID = try container.decodeIfPresent(UUID.self, forKey: .activeModeID) ?? transformModes[0].id
         stdioCommand = try container.decodeIfPresent(String.self, forKey: .stdioCommand) ?? defaults.stdioCommand
+        launchAtLogin = try container.decodeIfPresent(Bool.self, forKey: .launchAtLogin) ?? defaults.launchAtLogin
         if let decodedByAction = try? container.decodeIfPresent([HotkeyAction: Hotkey].self, forKey: .hotkeys) {
             hotkeys = decodedByAction
         } else {

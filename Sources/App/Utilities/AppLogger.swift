@@ -58,13 +58,9 @@ enum AppLogger {
     }
 
     private static func append(level: String, message: String) {
-        let timestamp = ISO8601DateFormatter.string(
-            from: Date(),
-            timeZone: .current,
-            formatOptions: [.withInternetDateTime, .withFractionalSeconds]
-        )
-        let line = "\(timestamp) [\(level)] \(message)"
         state.queue.sync {
+            let timestamp = state.timestampFormatter.string(from: Date())
+            let line = "\(timestamp) [\(level)] \(message)"
             state.entries.append(line)
             if state.entries.count > maxEntries {
                 state.entries.removeFirst(state.entries.count - maxEntries)
@@ -94,6 +90,12 @@ enum AppLogger {
 
 private final class LoggerState: @unchecked Sendable {
     let queue = DispatchQueue(label: "dev.sunarira.app.logbuffer")
+    lazy var timestampFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = .current
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
     var entries: [String] = []
     var includeSensitiveText = false
 }

@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import ServiceManagement
 import SwiftUI
 
 @MainActor
@@ -18,19 +19,30 @@ final class AppState: ObservableObject {
     @Published var modelRefreshMessage: String?
     @Published var transformPhase: TransformPhase = .idle
     @Published var runtimeLogText: String = ""
+    @Published var launchAtLoginStatusMessage: String?
+    @Published private(set) var accessibilityTrusted: Bool
 
     private let defaults: UserDefaults
     private let modelCatalogService: any ModelCatalogServiceProtocol
+    private let accessibilityService: AccessibilityService
     private let preferencesKey = "sunarira.preferences"
     private let runtimeLogLimit = 300
+    private let accessibilityPollInterval: TimeInterval = 0.8
+    private let accessibilityPollTolerance: TimeInterval = 0.25
+    private var accessibilityPollCancellable: AnyCancellable?
+    private var runtimeLogUpdateCancellable: AnyCancellable?
+    private var isRuntimeLogStreamingEnabled = false
     private var cancellables = Set<AnyCancellable>()
 
     init(
         defaults: UserDefaults = .standard,
-        modelCatalogService: any ModelCatalogServiceProtocol = ModelCatalogService()
+        modelCatalogService: any ModelCatalogServiceProtocol = ModelCatalogService(),
+        accessibilityService: AccessibilityService = AccessibilityService()
     ) {
         self.defaults = defaults
         self.modelCatalogService = modelCatalogService
+        self.accessibilityService = accessibilityService
+        accessibilityTrusted = accessibilityService.isTrusted(promptIfNeeded: false)
 
         if
             let data = defaults.data(forKey: preferencesKey),
@@ -45,15 +57,9 @@ final class AppState: ObservableObject {
 
         AppLogger.setIncludeSensitiveText(preferences.includeSensitiveTextInLogs)
         runtimeLogText = AppLogger.recentEntries(limit: runtimeLogLimit).joined(separator: "\n")
-        NotificationCenter.default.publisher(for: AppLogger.didUpdateNotification)
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                Task { @MainActor in
-                    self?.refreshRuntimeLogs()
-                }
-            }
-            .store(in: &cancellables)
         validateHotkeyConflicts()
+        refreshLaunchAtLoginState()
+        refreshAccessibilityTrustStatus()
     }
 
     var activeMode: TransformModePreset {
@@ -197,7 +203,67 @@ final class AppState: ObservableObject {
     }
 
     func refreshRuntimeLogs() {
-        runtimeLogText = AppLogger.recentEntries(limit: runtimeLogLimit).joined(separator: "\n")
+        let refreshed = AppLogger.recentEntries(limit: runtimeLogLimit).joined(separator: "\n")
+        if runtimeLogText != refreshed {
+            runtimeLogText = refreshed
+        }
+    }
+
+    func setRuntimeLogStreamingEnabled(_ enabled: Bool) {
+        guard isRuntimeLogStreamingEnabled != enabled else {
+            return
+        }
+        isRuntimeLogStreamingEnabled = enabled
+        if enabled {
+            startRuntimeLogStreaming()
+            refreshRuntimeLogs()
+        } else {
+            stopRuntimeLogStreaming()
+        }
+    }
+
+    func refreshAccessibilityTrustStatus() {
+        let trusted = accessibilityService.isTrusted(promptIfNeeded: false)
+        guard accessibilityTrusted != trusted else {
+            return
+        }
+        accessibilityTrusted = trusted
+    }
+
+    func refreshLaunchAtLoginState() {
+        guard !Self.isRunningTests else {
+            launchAtLoginStatusMessage = nil
+            return
+        }
+        applyLaunchAtLoginStatus(SMAppService.mainApp.status, requestedEnabled: nil)
+    }
+
+    func setLaunchAtLoginEnabled(_ enabled: Bool) {
+        guard !Self.isRunningTests else {
+            updatePreferences { prefs in
+                prefs.launchAtLogin = enabled
+            }
+            launchAtLoginStatusMessage = nil
+            return
+        }
+
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+            applyLaunchAtLoginStatus(SMAppService.mainApp.status, requestedEnabled: enabled)
+        } catch {
+            applyLaunchAtLoginStatus(SMAppService.mainApp.status, requestedEnabled: nil)
+            launchAtLoginStatusMessage = localizedUIString(
+                english: "Could not update launch at login: \(error.localizedDescription)",
+                japanese: "起動時に開始の設定を更新できませんでした: \(error.localizedDescription)",
+                german: "Beim Aktualisieren von „Beim Anmelden starten“ ist ein Fehler aufgetreten: \(error.localizedDescription)",
+                spanish: "No se pudo actualizar el inicio al iniciar sesión: \(error.localizedDescription)",
+                french: "Impossible de mettre à jour le lancement à la connexion : \(error.localizedDescription)"
+            )
+        }
     }
 
     func clearRuntimeLogs() {
@@ -319,6 +385,108 @@ final class AppState: ObservableObject {
         defaults.set(encoded, forKey: preferencesKey)
     }
 
+    func startAccessibilityStatusPolling() {
+        guard !Self.isRunningTests else {
+            return
+        }
+
+        guard accessibilityPollCancellable == nil else {
+            return
+        }
+
+        accessibilityPollCancellable = Timer.publish(
+            every: accessibilityPollInterval,
+            tolerance: accessibilityPollTolerance,
+            on: .main,
+            in: .common
+        )
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.refreshAccessibilityTrustStatus()
+            }
+    }
+
+    func stopAccessibilityStatusPolling() {
+        accessibilityPollCancellable?.cancel()
+        accessibilityPollCancellable = nil
+    }
+
+    private func startRuntimeLogStreaming() {
+        guard runtimeLogUpdateCancellable == nil else {
+            return
+        }
+        runtimeLogUpdateCancellable = NotificationCenter.default.publisher(for: AppLogger.didUpdateNotification)
+            .receive(on: RunLoop.main)
+            .debounce(for: .milliseconds(200), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.refreshRuntimeLogs()
+            }
+    }
+
+    private func stopRuntimeLogStreaming() {
+        runtimeLogUpdateCancellable?.cancel()
+        runtimeLogUpdateCancellable = nil
+    }
+
+    private func applyLaunchAtLoginStatus(_ status: SMAppService.Status, requestedEnabled: Bool?) {
+        let resolvedEnabled: Bool
+        let statusMessage: String?
+
+        switch status {
+        case .enabled:
+            resolvedEnabled = true
+            statusMessage = nil
+        case .notRegistered:
+            resolvedEnabled = false
+            if requestedEnabled == true {
+                statusMessage = localizedUIString(
+                    english: "macOS did not keep this app in Login Items. Check System Settings > General > Login Items.",
+                    japanese: "macOSでログイン項目への登録が完了しませんでした。システム設定 > 一般 > ログイン項目を確認してください。",
+                    german: "macOS hat diese App nicht in den Anmeldeobjekten behalten. Prüfen Sie Systemeinstellungen > Allgemein > Anmeldeobjekte.",
+                    spanish: "macOS no mantuvo esta app en Ítems de inicio. Revisa Ajustes del sistema > General > Ítems de inicio.",
+                    french: "macOS n'a pas conservé cette app dans les éléments de connexion. Vérifiez Réglages Système > Général > Ouverture."
+                )
+            } else {
+                statusMessage = nil
+            }
+        case .requiresApproval:
+            resolvedEnabled = true
+            statusMessage = localizedUIString(
+                english: "Launch at login is pending approval in System Settings > General > Login Items.",
+                japanese: "起動時に開始は承認待ちです。システム設定 > 一般 > ログイン項目で承認してください。",
+                german: "„Beim Anmelden starten“ wartet auf Genehmigung in Systemeinstellungen > Allgemein > Anmeldeobjekte.",
+                spanish: "El inicio al iniciar sesión está pendiente de aprobación en Ajustes del sistema > General > Ítems de inicio.",
+                french: "Le lancement à la connexion attend une approbation dans Réglages Système > Général > Ouverture."
+            )
+        case .notFound:
+            resolvedEnabled = false
+            statusMessage = localizedUIString(
+                english: "Launch at login is unavailable from this app location.",
+                japanese: "このアプリの現在の配置では起動時に開始を利用できません。",
+                german: "„Beim Anmelden starten“ ist von diesem App-Speicherort aus nicht verfügbar.",
+                spanish: "El inicio al iniciar sesión no está disponible desde esta ubicación de la app.",
+                french: "Le lancement à la connexion n'est pas disponible depuis cet emplacement de l'app."
+            )
+        @unknown default:
+            resolvedEnabled = preferences.launchAtLogin
+            statusMessage = localizedUIString(
+                english: "Could not determine launch-at-login status.",
+                japanese: "起動時に開始の状態を判定できませんでした。",
+                german: "Der Status für „Beim Anmelden starten“ konnte nicht ermittelt werden.",
+                spanish: "No se pudo determinar el estado del inicio al iniciar sesión.",
+                french: "Impossible de déterminer l'état du lancement à la connexion."
+            )
+        }
+
+        if preferences.launchAtLogin != resolvedEnabled {
+            updatePreferences { prefs in
+                prefs.launchAtLogin = resolvedEnabled
+            }
+        }
+
+        launchAtLoginStatusMessage = statusMessage
+    }
+
     private func validateHotkeyConflicts() {
         var seen: [Hotkey: HotkeyAction] = [:]
         for action in hotkeyActionsForConfiguredModes() {
@@ -400,5 +568,9 @@ final class AppState: ObservableObject {
             spanish: spanish,
             french: french
         )
+    }
+
+    private static var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }

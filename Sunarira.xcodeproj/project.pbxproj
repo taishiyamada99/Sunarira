@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0069B8085843A80C16BF8B61 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC8800092EA44BB423E9015 /* HotkeyManager.swift */; };
+		01651EBBBB76A5B5D1341786 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C632FFA17FA217EBDAA23B08 /* Assets.xcassets */; };
 		032B9559569B72EA06CE3EDF /* TransformResultNotifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03541ED42F6F40E491D48F1 /* TransformResultNotifierTests.swift */; };
 		040A801CE516CE0E5C4FBCDB /* PromptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53761D282130333D82BDC9C4 /* PromptBuilder.swift */; };
 		099F967143BF3892FC89C56B /* TransformMetricsAndMessageFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D0D1D778FCC634620FE5C7 /* TransformMetricsAndMessageFormatterTests.swift */; };
@@ -95,6 +96,7 @@
 		BBFFD1716FDD09C1C4D98C49 /* TransformContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformContext.swift; sourceTree = "<group>"; };
 		BE6EC8884646B0E9DEF182B7 /* InAppToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppToastPresenter.swift; sourceTree = "<group>"; };
 		C03541ED42F6F40E491D48F1 /* TransformResultNotifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformResultNotifierTests.swift; sourceTree = "<group>"; };
+		C632FFA17FA217EBDAA23B08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCC8800092EA44BB423E9015 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		CD6261B0F871233321AD34AB /* CodexJSONRPCEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexJSONRPCEngine.swift; sourceTree = "<group>"; };
 		D4D0D1D778FCC634620FE5C7 /* TransformMetricsAndMessageFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformMetricsAndMessageFormatterTests.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				EC15B3A5DF770CECCB2CE6BF /* AppDelegate.swift */,
+				C632FFA17FA217EBDAA23B08 /* Assets.xcassets */,
 				16F3C3A148304A83FFE46E0E /* Info.plist */,
 				FBC84A9F316128F4734C8562 /* SunariraApp.swift */,
 				3F20320F0B226D3C3E3CBD1A /* Hotkeys */,
@@ -242,6 +245,7 @@
 			buildConfigurationList = 74C5E11F54BF8D7691F31D4A /* Build configuration list for PBXNativeTarget "Sunarira" */;
 			buildPhases = (
 				97E54739250E6ECBCF23C26B /* Sources */,
+				EAB4DB0DB8B6FC2D4A933659 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -308,6 +312,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EAB4DB0DB8B6FC2D4A933659 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01651EBBBB76A5B5D1341786 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		97E54739250E6ECBCF23C26B /* Sources */ = {
@@ -473,8 +488,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-					MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.2.1;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.2.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -550,8 +565,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-					MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.2.1;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.2.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.sunarira.app;

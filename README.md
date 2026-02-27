@@ -1,4 +1,4 @@
-# Sunarira v0.2.1
+# Sunarira v0.2.2
 
 macOS menu bar app that transforms focused text in place using App Server stdio JSON-RPC.
 
@@ -112,6 +112,8 @@ Default keyboard shortcuts:
 ## Settings
 
 - Interface language: `English` / `日本語` / `Deutsch` / `Español` / `Français`
+- Startup:
+  - launch at login toggle (ON/OFF) from settings
 - Administrator mode button:
   - hidden by default for a cleaner basic layout
   - reveals advanced sections (`App Server`, `Logs`) when opened
@@ -130,6 +132,8 @@ Default keyboard shortcuts:
 - Logs section (Administrator mode):
   - refresh / clear runtime logs
   - optional input/output text logging toggle
+- About section:
+  - app version display (`v0.2.2`)
 
 ## Menu Bar
 

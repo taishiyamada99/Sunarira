@@ -5,6 +5,7 @@
 build/
 DerivedData/
 *.xcresult
+artifacts/
 
 # Xcode user-specific settings
 *.xcuserstate

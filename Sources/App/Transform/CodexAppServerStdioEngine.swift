@@ -78,7 +78,7 @@ private final class CodexAppServerStdioSession: @unchecked Sendable {
             params: [
                 "clientInfo": [
                     "name": "menu-bar-transformer",
-                    "version": "0.2.0"
+                    "version": "0.2.2"
                 ],
                 "capabilities": [
                     "experimentalApi": false

@@ -10,13 +10,15 @@ settings:
     PRODUCT_BUNDLE_IDENTIFIER: dev.sunarira.app
     CODE_SIGN_STYLE: Automatic
     CURRENT_PROJECT_VERSION: 1
-    MARKETING_VERSION: 0.2.1
+    MARKETING_VERSION: 0.2.2
 targets:
   Sunarira:
     type: application
     platform: macOS
     sources:
       - Sources/App
+    resources:
+      - Sources/App/Assets.xcassets
     info:
       path: Sources/App/Info.plist
       properties:

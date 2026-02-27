@@ -42,7 +42,7 @@ struct StdioJSONRPCClient {
         }
 
         return try await withCheckedThrowingContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.global(qos: .utility).async {
                 do {
                     let output = try runRequest(
                         command: command,
@@ -123,7 +123,7 @@ struct StdioJSONRPCClient {
                 id: initializeID ?? UUID().uuidString,
                 method: "initialize",
                 params: AnyEncodable(JSONRPCInitializeParams(
-                    clientInfo: JSONRPCClientInfo(name: "menu-bar-transformer", version: "0.2.0"),
+                    clientInfo: JSONRPCClientInfo(name: "menu-bar-transformer", version: "0.2.2"),
                     capabilities: JSONRPCCapabilities(experimentalApi: false)
                 ))
             )
@@ -229,7 +229,7 @@ private final class StdioRequestState: @unchecked Sendable {
     private let requestID: String
     private let initializeID: String?
     private let semaphore = DispatchSemaphore(value: 0)
-    private let queue = DispatchQueue(label: "StdioJSONRPCClient.requestState")
+    private let queue = DispatchQueue(label: "StdioJSONRPCClient.requestState", qos: .userInitiated)
 
     private var stdoutBuffer = Data()
     private var matchedResponse: [String: Any]?

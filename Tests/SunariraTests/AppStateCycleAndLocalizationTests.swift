@@ -97,11 +97,66 @@ final class AppStateCycleAndLocalizationTests: XCTestCase {
         XCTAssertTrue(appState.preferences.transformModes.contains(where: \.isEnabled))
     }
 
+    @MainActor
+    func testRuntimeLogsDoNotAutoRefreshWhenStreamingDisabled() async {
+        AppLogger.clear()
+        defer { AppLogger.clear() }
+
+        let defaults = isolatedDefaults("runtime-log-disabled")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+        appState.refreshRuntimeLogs()
+        XCTAssertEqual(appState.runtimeLogText, "")
+
+        let marker = "disabled-\(UUID().uuidString)"
+        AppLogger.info(marker)
+        await waitForDebounceWindow()
+
+        XCTAssertFalse(appState.runtimeLogText.contains(marker))
+        appState.refreshRuntimeLogs()
+        XCTAssertTrue(appState.runtimeLogText.contains(marker))
+    }
+
+    @MainActor
+    func testRuntimeLogsAutoRefreshOnlyWhileStreamingEnabled() async {
+        AppLogger.clear()
+        defer { AppLogger.clear() }
+
+        let defaults = isolatedDefaults("runtime-log-enabled")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+        appState.refreshRuntimeLogs()
+        XCTAssertEqual(appState.runtimeLogText, "")
+
+        appState.setRuntimeLogStreamingEnabled(true)
+
+        let firstMarker = "enabled-\(UUID().uuidString)"
+        AppLogger.info(firstMarker)
+        await waitForDebounceWindow()
+        XCTAssertTrue(appState.runtimeLogText.contains(firstMarker))
+
+        appState.setRuntimeLogStreamingEnabled(false)
+
+        let secondMarker = "disabled-again-\(UUID().uuidString)"
+        AppLogger.info(secondMarker)
+        await waitForDebounceWindow()
+        XCTAssertFalse(appState.runtimeLogText.contains(secondMarker))
+    }
+
     private func isolatedDefaults(_ suffix: String) -> UserDefaults {
         let suiteName = "AppStateCycleAndLocalizationTests.\(suffix).\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defaults.removePersistentDomain(forName: suiteName)
         return defaults
+    }
+
+    @MainActor
+    private func waitForDebounceWindow() async {
+        try? await Task.sleep(nanoseconds: 700_000_000)
     }
 }
 

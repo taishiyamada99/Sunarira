@@ -4,6 +4,13 @@ import Foundation
 
 @MainActor
 final class StatusItemController: NSObject, NSMenuDelegate {
+    private struct StatusPreferenceSnapshot: Equatable {
+        let interfaceLanguage: InterfaceLanguage
+        let activeModeID: UUID
+        let activeModeDisplayName: String
+        let activeModeModel: String
+    }
+
     private let appState: AppState
     private let accessibilityService: AccessibilityService
     private let onTransform: () -> Void
@@ -51,6 +58,8 @@ final class StatusItemController: NSObject, NSMenuDelegate {
 
     private func bindState() {
         appState.$preferences
+            .map(Self.statusPreferenceSnapshot(from:))
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.refresh()
@@ -58,6 +67,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             .store(in: &cancellables)
 
         appState.$hotkeyWarning
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.refresh()
@@ -65,11 +75,30 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             .store(in: &cancellables)
 
         appState.$transformPhase
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.refresh()
             }
             .store(in: &cancellables)
+
+        appState.$accessibilityTrusted
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.refresh()
+            }
+            .store(in: &cancellables)
+    }
+
+    private static func statusPreferenceSnapshot(from preferences: AppPreferences) -> StatusPreferenceSnapshot {
+        let activeMode = preferences.transformModes.first(where: { $0.id == preferences.activeModeID }) ?? preferences.transformModes[0]
+        return StatusPreferenceSnapshot(
+            interfaceLanguage: preferences.interfaceLanguage,
+            activeModeID: activeMode.id,
+            activeModeDisplayName: activeMode.displayName,
+            activeModeModel: activeMode.model
+        )
     }
 
     private func buildMenu() -> NSMenu {
@@ -110,9 +139,8 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         reRegisterItem.target = self
         menu.addItem(reRegisterItem)
 
-        let trusted = accessibilityService.isTrusted(promptIfNeeded: false)
         let accessibilityItem = NSMenuItem(
-            title: trusted
+            title: appState.accessibilityTrusted
                 ? localized("Accessibility: OK", "アクセシビリティ: 許可済み", "Bedienungshilfen: OK", "Accesibilidad: OK", "Accessibilité : OK")
                 : localized("Accessibility: Not granted", "アクセシビリティ: 未許可", "Bedienungshilfen: Nicht gewährt", "Accesibilidad: No concedido", "Accessibilité : Non accordé"),
             action: #selector(didTapAccessibilitySettings),
@@ -228,6 +256,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     }
 
     @objc private func didTapStatusButton(_ sender: NSStatusBarButton) {
+        appState.refreshAccessibilityTrustStatus()
         let menu = buildMenu()
         menu.delegate = self
         activeMenu = menu

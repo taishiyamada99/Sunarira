@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2026-02-27
+
+### Added
+
+- Startup setting to toggle launch at login from the Settings window.
+- Launch-at-login status feedback message in Settings when macOS approval is required or unavailable.
+- About section in Settings with app version display.
+
+### Changed
+
+- Marketing version updated to `0.2.2`.
+- Settings now display release label as `v0.2.2`.
+- Internal App Server stdio client metadata version updated from `0.2.2-alpha` to `0.2.2`.
+
 ## [0.2.1] - 2026-02-27
 
 ### Added

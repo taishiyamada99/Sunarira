@@ -77,4 +77,15 @@ final class AppPreferencesModeTests: XCTestCase {
 
         XCTAssertEqual(prefs.activeModeID, prefs.transformModes[1].id)
     }
+
+    func testLaunchAtLoginDefaultsToFalseWhenKeyIsMissing() throws {
+        let json = """
+        {
+          "schemaVersion": 2
+        }
+        """
+
+        let decoded = try JSONDecoder().decode(AppPreferences.self, from: Data(json.utf8))
+        XCTAssertFalse(decoded.launchAtLogin)
+    }
 }
