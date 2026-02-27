@@ -17,7 +17,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 - Marketing version updated to `0.2.2`.
 - Settings now display release label as `v0.2.2`.
-- Internal App Server stdio client metadata version updated from `0.2.2-alpha` to `0.2.2`.
+- Internal App Server stdio client metadata version finalized to `0.2.2`.
 
 ## [0.2.1] - 2026-02-27
 
