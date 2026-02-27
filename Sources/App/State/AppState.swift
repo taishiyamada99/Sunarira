@@ -74,8 +74,11 @@ final class AppState: ObservableObject {
     func setHotkey(_ hotkey: Hotkey, for action: HotkeyAction) {
         guard hotkey.isValid else {
             hotkeyWarning = localizedUIString(
-                english: "Shortcut must include at least one modifier key.",
-                japanese: "ショートカットには少なくとも1つの修飾キーが必要です。"
+                english: "Keyboard shortcut must include at least one modifier key.",
+                japanese: "キーボードショートカットには少なくとも1つの修飾キーが必要です。",
+                german: "Ein Tastaturkurzbefehl muss mindestens eine Modifizierertaste enthalten.",
+                spanish: "El atajo de teclado debe incluir al menos una tecla modificadora.",
+                french: "Un raccourci clavier doit inclure au moins une touche de modification."
             )
             return
         }
@@ -84,23 +87,42 @@ final class AppState: ObservableObject {
         }
     }
 
-    func cycleMode() {
-        let modes = enabledModes()
-        guard !modes.isEmpty else { return }
+    func hotkeyActionsForConfiguredModes() -> [HotkeyAction] {
+        preferences.transformModes.indices.compactMap(HotkeyAction.forModeIndex(_:))
+    }
 
-        let activeID = preferences.activeModeID
-        guard let index = modes.firstIndex(where: { $0.id == activeID }) else {
-            selectMode(modes[0].id)
-            return
+    func modeForHotkeyAction(_ action: HotkeyAction) -> TransformModePreset? {
+        let index = action.modeIndex
+        guard index < preferences.transformModes.count else {
+            return nil
         }
+        return preferences.transformModes[index]
+    }
 
-        let next = modes[(index + 1) % modes.count]
-        selectMode(next.id)
+    func registeredHotkeys() -> [HotkeyAction: Hotkey] {
+        var registered: [HotkeyAction: Hotkey] = [:]
+        for action in hotkeyActionsForConfiguredModes() {
+            guard modeForHotkeyAction(action)?.isEnabled == true else { continue }
+            let hotkey = hotkey(for: action)
+            if hotkey.isValid {
+                registered[action] = hotkey
+            }
+        }
+        return registered
+    }
+
+    func hotkeyActionLabel(_ action: HotkeyAction) -> String {
+        let number = action.modeIndex + 1
+        let slot = localizedModeSlotLabel(number)
+        if let mode = modeForHotkeyAction(action) {
+            return "\(slot): \(mode.displayName)"
+        }
+        return slot
     }
 
     func selectMode(_ id: UUID) {
         updatePreferences { prefs in
-            guard prefs.transformModes.contains(where: { $0.id == id }) else { return }
+            guard let mode = prefs.transformModes.first(where: { $0.id == id }), mode.isEnabled else { return }
             prefs.activeModeID = id
         }
     }
@@ -114,6 +136,13 @@ final class AppState: ObservableObject {
                 let hasEnabled = prefs.transformModes.contains { $0.isEnabled }
                 if !hasEnabled {
                     prefs.transformModes[index].isEnabled = true
+                }
+            }
+
+            // Keep active mode selectable/executable.
+            if !prefs.transformModes.contains(where: { $0.id == prefs.activeModeID && $0.isEnabled }) {
+                if let fallback = prefs.transformModes.first(where: \.isEnabled) {
+                    prefs.activeModeID = fallback.id
                 }
             }
         }
@@ -137,9 +166,19 @@ final class AppState: ObservableObject {
         updatePreferences { prefs in
             guard prefs.transformModes.count > AppPreferences.minModeCount else { return }
             prefs.transformModes.removeAll { $0.id == id }
-            if !prefs.transformModes.contains(where: { $0.id == prefs.activeModeID }) {
-                prefs.activeModeID = prefs.transformModes[0].id
+            if !prefs.transformModes.contains(where: \.isEnabled), !prefs.transformModes.isEmpty {
+                prefs.transformModes[0].isEnabled = true
             }
+
+            if let activeEnabled = prefs.transformModes.first(where: { $0.id == prefs.activeModeID && $0.isEnabled }) {
+                prefs.activeModeID = activeEnabled.id
+                return
+            }
+            if let firstEnabled = prefs.transformModes.first(where: \.isEnabled) {
+                prefs.activeModeID = firstEnabled.id
+                return
+            }
+            prefs.activeModeID = prefs.transformModes[0].id
         }
     }
 
@@ -172,7 +211,10 @@ final class AppState: ObservableObject {
             availableModels = []
             modelRefreshMessage = localizedUIString(
                 english: "Set a stdio launch command first.",
-                japanese: "先にstdio起動コマンドを設定してください。"
+                japanese: "先にstdio起動コマンドを設定してください。",
+                german: "Legen Sie zuerst einen stdio-Startbefehl fest.",
+                spanish: "Primero configura un comando de inicio stdio.",
+                french: "Définissez d'abord une commande de lancement stdio."
             )
             return
         }
@@ -187,20 +229,29 @@ final class AppState: ObservableObject {
             if models.isEmpty {
                 modelRefreshMessage = localizedUIString(
                     english: "No models were returned by model/list.",
-                    japanese: "model/list がモデルを返しませんでした。"
+                    japanese: "model/list がモデルを返しませんでした。",
+                    german: "model/list hat keine Modelle zurückgegeben.",
+                    spanish: "model/list no devolvió modelos.",
+                    french: "model/list n'a renvoyé aucun modèle."
                 )
                 return
             }
 
             modelRefreshMessage = localizedUIString(
                 english: "Loaded \(models.count) model(s) from model/list.",
-                japanese: "model/list から \(models.count) 件のモデルを読み込みました。"
+                japanese: "model/list から \(models.count) 件のモデルを読み込みました。",
+                german: "\(models.count) Modell(e) aus model/list geladen.",
+                spanish: "Se cargaron \(models.count) modelo(s) desde model/list.",
+                french: "\(models.count) modèle(s) chargé(s) depuis model/list."
             )
         } catch {
             availableModels = []
             modelRefreshMessage = localizedUIString(
                 english: "Model load failed: \(error.localizedDescription)",
-                japanese: "モデル取得に失敗しました: \(error.localizedDescription)"
+                japanese: "モデル取得に失敗しました: \(error.localizedDescription)",
+                german: "Modellladen fehlgeschlagen: \(error.localizedDescription)",
+                spanish: "Error al cargar modelos: \(error.localizedDescription)",
+                french: "Échec du chargement des modèles : \(error.localizedDescription)"
             )
         }
     }
@@ -263,11 +314,6 @@ final class AppState: ObservableObject {
         return options
     }
 
-    private func enabledModes() -> [TransformModePreset] {
-        let enabled = preferences.transformModes.filter(\.isEnabled)
-        return enabled.isEmpty ? [preferences.transformModes[0]] : enabled
-    }
-
     private func persist() {
         guard let encoded = try? JSONEncoder().encode(preferences) else { return }
         defaults.set(encoded, forKey: preferencesKey)
@@ -275,12 +321,16 @@ final class AppState: ObservableObject {
 
     private func validateHotkeyConflicts() {
         var seen: [Hotkey: HotkeyAction] = [:]
-        for action in HotkeyAction.allCases {
+        for action in hotkeyActionsForConfiguredModes() {
+            guard modeForHotkeyAction(action)?.isEnabled == true else { continue }
             let key = hotkey(for: action)
             if let duplicatedAction = seen[key] {
                 hotkeyWarning = localizedUIString(
-                    english: "Shortcut conflict: \(duplicatedAction.displayName) and \(action.displayName) share \(key.displayString).",
-                    japanese: "ショートカット競合: \(duplicatedAction.displayName) と \(action.displayName) が \(key.displayString) で重複しています。"
+                    english: "Keyboard shortcut conflict: \(localizedHotkeyActionName(duplicatedAction)) and \(localizedHotkeyActionName(action)) share \(key.displayString).",
+                    japanese: "キーボードショートカット競合: \(localizedHotkeyActionName(duplicatedAction)) と \(localizedHotkeyActionName(action)) が \(key.displayString) で重複しています。",
+                    german: "Tastaturkurzbefehl-Konflikt: \(localizedHotkeyActionName(duplicatedAction)) und \(localizedHotkeyActionName(action)) verwenden beide \(key.displayString).",
+                    spanish: "Conflicto de atajo de teclado: \(localizedHotkeyActionName(duplicatedAction)) y \(localizedHotkeyActionName(action)) usan \(key.displayString).",
+                    french: "Conflit de raccourci clavier : \(localizedHotkeyActionName(duplicatedAction)) et \(localizedHotkeyActionName(action)) utilisent \(key.displayString)."
                 )
                 return
             }
@@ -322,7 +372,33 @@ final class AppState: ObservableObject {
         return (family, major, minor, patch)
     }
 
-    private func localizedUIString(english: String, japanese: String) -> String {
-        preferences.interfaceLanguage == .japanese ? japanese : english
+    private func localizedHotkeyActionName(_ action: HotkeyAction) -> String {
+        hotkeyActionLabel(action)
+    }
+
+    private func localizedModeSlotLabel(_ number: Int) -> String {
+        preferences.interfaceLanguage.localized(
+            english: "Mode \(number)",
+            japanese: "モード\(number)",
+            german: "Modus \(number)",
+            spanish: "Modo \(number)",
+            french: "Mode \(number)"
+        )
+    }
+
+    private func localizedUIString(
+        english: String,
+        japanese: String,
+        german: String? = nil,
+        spanish: String? = nil,
+        french: String? = nil
+    ) -> String {
+        preferences.interfaceLanguage.localized(
+            english: english,
+            japanese: japanese,
+            german: german,
+            spanish: spanish,
+            french: french
+        )
     }
 }

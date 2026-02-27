@@ -1,9 +1,21 @@
-# Sunarira v0.2.0
+# Sunarira v0.2.1
 
 macOS menu bar app that transforms focused text in place using App Server stdio JSON-RPC.
 
 ## What Changed
 
+- Added transform-result toast shown at top-right on every successful transform:
+  - format examples:
+    - Japanese: `100→80文字(80%,1.2秒)`
+    - English: `100→80 chars (80%, 1.2s)`
+  - auto-hide after a short duration
+- Added transform-failed toast for failed flows (including accessibility-not-granted cases).
+- Toast sizing now adapts to message length and language to reduce truncation.
+- Interface language selector now uses a pull-down menu (scales to additional languages).
+- Added interface language support for:
+  - `Deutsch`
+  - `Español`
+  - `Français`
 - Transform UX is now based on user-defined modes only (1 to 5 modes).
 - Each mode has:
   - display name
@@ -22,7 +34,7 @@ macOS menu bar app that transforms focused text in place using App Server stdio 
 
 ## Requirements
 
-- macOS 13.0 or later
+- macOS 14.0 or later
 - Xcode 16+ (for local build/test workflows)
 - Swift toolchain compatible with project settings (`SWIFT_VERSION = 6.0`)
 - `codex` CLI installed and available in PATH
@@ -89,27 +101,33 @@ open build/Release/Sunarira.app
   - `超端的`
   - `意味保持短縮`
 
-Default hotkeys:
+Default keyboard shortcuts:
 
-- Transform: `⌃⌥⌘R`
-- Cycle mode: `⌃⌥⌘M`
+- Mode 1: `⌃1`
+- Mode 2: `⌃2`
+- Mode 3: `⌃3`
+- Mode 4: `⌃4`
+- Mode 5: `⌃5`
 
 ## Settings
 
-- Interface language: `English` / `日本語`
+- Interface language: `English` / `日本語` / `Deutsch` / `Español` / `Français`
+- Administrator mode button:
+  - hidden by default for a cleaner basic layout
+  - reveals advanced sections (`App Server`, `Logs`) when opened
 - Modes section:
   - add/remove mode (bounded to 1..5)
   - reorder mode
   - enable/disable mode
   - edit display name / prompt template / model
   - set active mode
-- App Server section:
+- App Server section (Administrator mode):
   - edit stdio launch command
   - refresh models via `model/list`
-- Hotkeys section:
-  - transform
-  - cycle mode
-- Logs section:
+- Keyboard Shortcuts section:
+  - one keyboard shortcut per mode (`Mode 1`..`Mode 5`)
+  - pressing a mode keyboard shortcut switches active mode and runs transform immediately
+- Logs section (Administrator mode):
   - refresh / clear runtime logs
   - optional input/output text logging toggle
 
@@ -125,7 +143,7 @@ Default hotkeys:
   - Current Mode
   - Modes
   - Open Settings...
-  - Re-register Hotkeys
+  - Re-register Keyboard Shortcuts
   - Accessibility status
   - Quit
 

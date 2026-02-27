@@ -4,6 +4,7 @@ import SwiftUI
 struct HotkeyRecorderRow: View {
     let title: String
     let hotkey: Hotkey
+    let recordingLabel: String
     let onChange: (Hotkey) -> Void
 
     @State private var isRecording = false
@@ -13,7 +14,7 @@ struct HotkeyRecorderRow: View {
         HStack {
             Text(title)
             Spacer()
-            Button(isRecording ? "Press shortcut..." : hotkey.displayString) {
+            Button(isRecording ? recordingLabel : hotkey.displayString) {
                 startRecording()
             }
             .buttonStyle(.bordered)

@@ -63,10 +63,7 @@ struct AppPreferences: Codable, Equatable {
             transformModes: modes,
             activeModeID: modes[0].id,
             stdioCommand: "codex app-server --listen stdio://",
-            hotkeys: [
-                .transform: Hotkey(keyCode: 15, modifiers: UInt32(cmdKey | optionKey | controlKey)),
-                .cycleMode: Hotkey(keyCode: 46, modifiers: UInt32(cmdKey | optionKey | controlKey))
-            ],
+            hotkeys: defaultHotkeys(),
             includeSensitiveTextInLogs: false
         )
     }()
@@ -99,7 +96,12 @@ struct AppPreferences: Codable, Equatable {
         )
         activeModeID = try container.decodeIfPresent(UUID.self, forKey: .activeModeID) ?? transformModes[0].id
         stdioCommand = try container.decodeIfPresent(String.self, forKey: .stdioCommand) ?? defaults.stdioCommand
-        hotkeys = try container.decodeIfPresent([HotkeyAction: Hotkey].self, forKey: .hotkeys) ?? defaults.hotkeys
+        if let decodedByAction = try? container.decodeIfPresent([HotkeyAction: Hotkey].self, forKey: .hotkeys) {
+            hotkeys = decodedByAction
+        } else {
+            let decodedHotkeys = (try? container.decodeIfPresent([String: Hotkey].self, forKey: .hotkeys)) ?? [:]
+            hotkeys = AppPreferences.migratedHotkeys(from: decodedHotkeys, defaults: defaults.hotkeys)
+        }
         includeSensitiveTextInLogs = try container.decodeIfPresent(Bool.self, forKey: .includeSensitiveTextInLogs) ?? defaults.includeSensitiveTextInLogs
         sanitizeActiveMode()
     }
@@ -113,18 +115,24 @@ struct AppPreferences: Codable, Equatable {
             stdioCommand = AppPreferences.default.stdioCommand
         }
 
-        if hotkeys[.transform]?.isValid != true {
-            hotkeys[.transform] = AppPreferences.default.hotkeys[.transform]
-        }
-        if hotkeys[.cycleMode]?.isValid != true {
-            hotkeys[.cycleMode] = AppPreferences.default.hotkeys[.cycleMode]
+        for action in HotkeyAction.allCases {
+            if hotkeys[action]?.isValid != true {
+                hotkeys[action] = AppPreferences.default.hotkeys[action]
+            }
         }
     }
 
     private mutating func sanitizeActiveMode() {
-        if !transformModes.contains(where: { $0.id == activeModeID }) {
-            activeModeID = transformModes[0].id
+        if transformModes.contains(where: { $0.id == activeModeID && $0.isEnabled }) {
+            return
         }
+
+        if let firstEnabled = transformModes.first(where: \.isEnabled) {
+            activeModeID = firstEnabled.id
+            return
+        }
+
+        activeModeID = transformModes[0].id
     }
 
     private static func normalizedModes(_ modes: [TransformModePreset]) -> [TransformModePreset] {
@@ -149,7 +157,42 @@ struct AppPreferences: Codable, Equatable {
             normalized.append(defaultModes(model: defaultModel)[0])
         }
 
+        if !normalized.contains(where: \.isEnabled), !normalized.isEmpty {
+            normalized[0].isEnabled = true
+        }
+
         return normalized
+    }
+
+    private static func migratedHotkeys(
+        from decoded: [String: Hotkey],
+        defaults: [HotkeyAction: Hotkey]
+    ) -> [HotkeyAction: Hotkey] {
+        var mapped = defaults
+        for (key, hotkey) in decoded {
+            if let action = HotkeyAction(rawValue: key) {
+                mapped[action] = hotkey
+                continue
+            }
+
+            // v0.2.0 migration:
+            // - transform -> mode1
+            // - cycleMode is removed and intentionally ignored
+            if key == "transform" {
+                mapped[.mode1] = hotkey
+            }
+        }
+        return mapped
+    }
+
+    private static func defaultHotkeys() -> [HotkeyAction: Hotkey] {
+        [
+            .mode1: Hotkey(keyCode: 18, modifiers: UInt32(controlKey)),
+            .mode2: Hotkey(keyCode: 19, modifiers: UInt32(controlKey)),
+            .mode3: Hotkey(keyCode: 20, modifiers: UInt32(controlKey)),
+            .mode4: Hotkey(keyCode: 21, modifiers: UInt32(controlKey)),
+            .mode5: Hotkey(keyCode: 23, modifiers: UInt32(controlKey))
+        ]
     }
 
     static func defaultModes(model: String) -> [TransformModePreset] {

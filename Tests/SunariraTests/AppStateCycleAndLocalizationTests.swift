@@ -3,25 +3,6 @@ import XCTest
 
 final class AppStateCycleAndLocalizationTests: XCTestCase {
     @MainActor
-    func testCycleModeMovesAcrossEnabledModes() {
-        let defaults = isolatedDefaults("cycle")
-        let appState = AppState(
-            defaults: defaults,
-            modelCatalogService: DummyModelCatalogService()
-        )
-
-        let first = appState.activeMode.id
-        appState.cycleMode()
-        let second = appState.activeMode.id
-        XCTAssertNotEqual(first, second)
-
-        // Disable current and ensure cycle still works on enabled set.
-        appState.updateMode(id: second) { $0.isEnabled = false }
-        appState.cycleMode()
-        XCTAssertNotEqual(appState.activeMode.id, second)
-    }
-
-    @MainActor
     func testLocalizationAppliesToModelRefreshErrorMessage() async {
         let defaults = isolatedDefaults("localize")
         let appState = AppState(
@@ -34,6 +15,86 @@ final class AppStateCycleAndLocalizationTests: XCTestCase {
 
         await appState.refreshAvailableModels()
         XCTAssertEqual(appState.modelRefreshMessage, "model/list から 1 件のモデルを読み込みました。")
+    }
+
+    @MainActor
+    func testRegisteredHotkeysMatchConfiguredModes() {
+        let defaults = isolatedDefaults("hotkey-map")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+
+        appState.updatePreferences { prefs in
+            prefs.transformModes = Array(prefs.transformModes.prefix(2))
+        }
+
+        let registered = appState.registeredHotkeys()
+        XCTAssertEqual(registered.count, 2)
+        XCTAssertNotNil(registered[.mode1])
+        XCTAssertNotNil(registered[.mode2])
+        XCTAssertNil(registered[.mode3])
+        XCTAssertEqual(appState.modeForHotkeyAction(.mode2)?.id, appState.preferences.transformModes[1].id)
+    }
+
+    @MainActor
+    func testRegisteredHotkeysExcludeDisabledModes() {
+        let defaults = isolatedDefaults("hotkey-disabled")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+
+        guard appState.preferences.transformModes.count >= 2 else {
+            XCTFail("Expected at least 2 default modes")
+            return
+        }
+        let secondID = appState.preferences.transformModes[1].id
+        appState.updateMode(id: secondID) { $0.isEnabled = false }
+
+        let registered = appState.registeredHotkeys()
+        XCTAssertNotNil(registered[.mode1])
+        XCTAssertNil(registered[.mode2])
+    }
+
+    @MainActor
+    func testSelectModeIgnoresDisabledMode() {
+        let defaults = isolatedDefaults("select-disabled")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+
+        guard appState.preferences.transformModes.count >= 2 else {
+            XCTFail("Expected at least 2 default modes")
+            return
+        }
+
+        let originalActive = appState.activeMode.id
+        let disabledModeID = appState.preferences.transformModes[1].id
+        appState.updateMode(id: disabledModeID) { $0.isEnabled = false }
+        appState.selectMode(disabledModeID)
+
+        XCTAssertEqual(appState.activeMode.id, originalActive)
+    }
+
+    @MainActor
+    func testRemoveModeKeepsEnabledActiveMode() {
+        let defaults = isolatedDefaults("remove-mode-enabled")
+        let appState = AppState(
+            defaults: defaults,
+            modelCatalogService: DummyModelCatalogService()
+        )
+
+        // Make first mode disabled and second mode active/enabled.
+        let firstID = appState.preferences.transformModes[0].id
+        let secondID = appState.preferences.transformModes[1].id
+        appState.selectMode(secondID)
+        appState.updateMode(id: firstID) { $0.isEnabled = false }
+        appState.removeMode(id: secondID)
+
+        XCTAssertTrue(appState.activeMode.isEnabled)
+        XCTAssertTrue(appState.preferences.transformModes.contains(where: \.isEnabled))
     }
 
     private func isolatedDefaults(_ suffix: String) -> UserDefaults {

@@ -42,8 +42,12 @@ final class SettingsWindowController {
     }
 
     private func windowTitle() -> String {
-        appState.preferences.interfaceLanguage == .japanese
-            ? "スナリラ (Sunarira) 設定"
-            : "Sunarira Settings"
+        appState.preferences.interfaceLanguage.localized(
+            english: "Sunarira Settings",
+            japanese: "スナリラ (Sunarira) 設定",
+            german: "Sunarira Einstellungen",
+            spanish: "Configuración de Sunarira",
+            french: "Réglages de Sunarira"
+        )
     }
 }
