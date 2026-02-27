@@ -1,0 +1,575 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0069B8085843A80C16BF8B61 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC8800092EA44BB423E9015 /* HotkeyManager.swift */; };
+		040A801CE516CE0E5C4FBCDB /* PromptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53761D282130333D82BDC9C4 /* PromptBuilder.swift */; };
+		0D22908763C1CBBB061CC076 /* LocalStubEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C3CC8DB7E500B6C60BB898 /* LocalStubEngine.swift */; };
+		14210F4685D0555A214636E6 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7586BFD717D8BA351C6F6E /* AppCoordinator.swift */; };
+		24C192CFD48A82000651BC93 /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3761FDCA330F14F052281B6 /* StatusItemController.swift */; };
+		25B79026B56DAAE142072281 /* TransformServiceStabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F23E6FE20CAF680AE20BDCD /* TransformServiceStabilityTests.swift */; };
+		272724B4A1F6410F1E787A1B /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D248104915C6229E05E2987 /* AppPreferences.swift */; };
+		3560BB94FF6E714AC599507C /* TransformEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816F27FB79AF5D2804FDB26C /* TransformEngine.swift */; };
+		3A3A948494D9ED18831442F3 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254D797A27333DCC5D6D8713 /* ClipboardService.swift */; };
+		3DF95C41C9B22C23F48E58E7 /* AXTextService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D77BC49CC69C21005E03FF /* AXTextService.swift */; };
+		412313D2880B445D1A158E75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC15B3A5DF770CECCB2CE6BF /* AppDelegate.swift */; };
+		443D9723904A04EA5EB8048F /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DB3BD1E0D451C418AE3522 /* SettingsWindowController.swift */; };
+		47FE1C1C7111586F479642D4 /* AppStatePersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DB2AE4D18202D08AB3C0F5 /* AppStatePersistenceTests.swift */; };
+		4A69ECD2EC46EFC76EF852B2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A2F37AC22876540EB07A5E /* SettingsView.swift */; };
+		4F3D8B46EB56146380F42FCC /* UserNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A184D0B4B1FCA195AC002 /* UserNotifier.swift */; };
+		4F815D38B8FB28C5B2EB9B01 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C23B8D63C8D25DC8005EDB /* Enums.swift */; };
+		5AB70A701F4D39676140A7FA /* TransformContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFFD1716FDD09C1C4D98C49 /* TransformContext.swift */; };
+		6873001056B196C24BF665D5 /* TransformService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEE87F2346BB99EAFA55D6E /* TransformService.swift */; };
+		69CFA996A090AFE60A2EB897 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3EECF3BB05E5DCE76E8F78 /* AppLogger.swift */; };
+		730117355198E8848D9A02FE /* Hotkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6270D6650127F0BD184CA /* Hotkey.swift */; };
+		7806DE326FCBD5510E7583EC /* KeySender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB894A8BCCA5997580835F2 /* KeySender.swift */; };
+		7A930E859DD845FC3037B7C9 /* CodexAppServerStdioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C6D4E76601761BE06A06F4 /* CodexAppServerStdioEngine.swift */; };
+		9D25632A9BC151ACCD81C863 /* ModelCatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9376233DDB16783E3657D1D /* ModelCatalogService.swift */; };
+		9D43EF2F5261F84546301E52 /* AccessibilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398DF5BC667418DBD6D37A3 /* AccessibilityService.swift */; };
+		A626220BEFE8EA0E6743C908 /* ModelSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C869CA52748DFBE03D42187 /* ModelSelectionTests.swift */; };
+		AEDAC605AB570C3D21A1C12A /* PromptBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5FF63327A1A9417222A97A /* PromptBuilderTests.swift */; };
+		C6FA53BFA359466B9BC7B79C /* CodexJSONRPCEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6261B0F871233321AD34AB /* CodexJSONRPCEngine.swift */; };
+		C9F6F48E96DE6DF7F4F89ECF /* HotkeyRecorderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214B471B3DB003D83825278 /* HotkeyRecorderRow.swift */; };
+		DE1BAB146535351B08707F62 /* ClipboardFallbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533AF0C2DE2028F7D60E1F45 /* ClipboardFallbackService.swift */; };
+		E2315F5BF7B7DAC5BEFD69F7 /* SunariraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC84A9F316128F4734C8562 /* SunariraApp.swift */; };
+		E36F742F22D9A910B3FC53B7 /* AppPreferencesModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E49E7759DD35AF0FA0A1B3 /* AppPreferencesModeTests.swift */; };
+		EE910753F6FB9621E93CA25C /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5165D73D1EC3E7E8DF94E213 /* AppState.swift */; };
+		FC6055A93C279F7FFD605175 /* AppStateCycleAndLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BE06C02101AF1C15C19814 /* AppStateCycleAndLocalizationTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F2173303B7BA7E29AAC1CAF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CCA1FF8CB1393EC6218BFB1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 138489AD97289F5DE31DC1CA;
+			remoteInfo = Sunarira;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0214B471B3DB003D83825278 /* HotkeyRecorderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRecorderRow.swift; sourceTree = "<group>"; };
+		03DB2AE4D18202D08AB3C0F5 /* AppStatePersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatePersistenceTests.swift; sourceTree = "<group>"; };
+		0D7586BFD717D8BA351C6F6E /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		0F23E6FE20CAF680AE20BDCD /* TransformServiceStabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformServiceStabilityTests.swift; sourceTree = "<group>"; };
+		11E49E7759DD35AF0FA0A1B3 /* AppPreferencesModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesModeTests.swift; sourceTree = "<group>"; };
+		16F3C3A148304A83FFE46E0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		17AD9E5CA4596DCB4165534D /* SunariraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SunariraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B3EECF3BB05E5DCE76E8F78 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		1D248104915C6229E05E2987 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		254D797A27333DCC5D6D8713 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
+		28D77BC49CC69C21005E03FF /* AXTextService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXTextService.swift; sourceTree = "<group>"; };
+		2CC6270D6650127F0BD184CA /* Hotkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hotkey.swift; sourceTree = "<group>"; };
+		5165D73D1EC3E7E8DF94E213 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		533AF0C2DE2028F7D60E1F45 /* ClipboardFallbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardFallbackService.swift; sourceTree = "<group>"; };
+		53761D282130333D82BDC9C4 /* PromptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptBuilder.swift; sourceTree = "<group>"; };
+		5C869CA52748DFBE03D42187 /* ModelSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSelectionTests.swift; sourceTree = "<group>"; };
+		5CB894A8BCCA5997580835F2 /* KeySender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySender.swift; sourceTree = "<group>"; };
+		628EF3388D21C4DD541B2F56 /* Sunarira.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunarira.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F8A184D0B4B1FCA195AC002 /* UserNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifier.swift; sourceTree = "<group>"; };
+		7398DF5BC667418DBD6D37A3 /* AccessibilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityService.swift; sourceTree = "<group>"; };
+		7CEE87F2346BB99EAFA55D6E /* TransformService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformService.swift; sourceTree = "<group>"; };
+		816F27FB79AF5D2804FDB26C /* TransformEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformEngine.swift; sourceTree = "<group>"; };
+		91C3CC8DB7E500B6C60BB898 /* LocalStubEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStubEngine.swift; sourceTree = "<group>"; };
+		92C23B8D63C8D25DC8005EDB /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		A9DB3BD1E0D451C418AE3522 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		B2A2F37AC22876540EB07A5E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B3761FDCA330F14F052281B6 /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
+		B3BE06C02101AF1C15C19814 /* AppStateCycleAndLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateCycleAndLocalizationTests.swift; sourceTree = "<group>"; };
+		B7C6D4E76601761BE06A06F4 /* CodexAppServerStdioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAppServerStdioEngine.swift; sourceTree = "<group>"; };
+		B9376233DDB16783E3657D1D /* ModelCatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCatalogService.swift; sourceTree = "<group>"; };
+		BBFFD1716FDD09C1C4D98C49 /* TransformContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformContext.swift; sourceTree = "<group>"; };
+		CCC8800092EA44BB423E9015 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
+		CD6261B0F871233321AD34AB /* CodexJSONRPCEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexJSONRPCEngine.swift; sourceTree = "<group>"; };
+		EB5FF63327A1A9417222A97A /* PromptBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptBuilderTests.swift; sourceTree = "<group>"; };
+		EC15B3A5DF770CECCB2CE6BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FBC84A9F316128F4734C8562 /* SunariraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunariraApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		18FE72386F138E00B8F8B1B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				628EF3388D21C4DD541B2F56 /* Sunarira.app */,
+				17AD9E5CA4596DCB4165534D /* SunariraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3C9C9E2F80299D4E538EC24F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7398DF5BC667418DBD6D37A3 /* AccessibilityService.swift */,
+				0D7586BFD717D8BA351C6F6E /* AppCoordinator.swift */,
+				28D77BC49CC69C21005E03FF /* AXTextService.swift */,
+				533AF0C2DE2028F7D60E1F45 /* ClipboardFallbackService.swift */,
+				254D797A27333DCC5D6D8713 /* ClipboardService.swift */,
+				B9376233DDB16783E3657D1D /* ModelCatalogService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3F20320F0B226D3C3E3CBD1A /* Hotkeys */ = {
+			isa = PBXGroup;
+			children = (
+				CCC8800092EA44BB423E9015 /* HotkeyManager.swift */,
+			);
+			path = Hotkeys;
+			sourceTree = "<group>";
+		};
+		7334E0DC1A1F3DF6E4EC2FF0 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1B3EECF3BB05E5DCE76E8F78 /* AppLogger.swift */,
+				5CB894A8BCCA5997580835F2 /* KeySender.swift */,
+				6F8A184D0B4B1FCA195AC002 /* UserNotifier.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		7F9955E7F611DDF9F36C0910 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				5165D73D1EC3E7E8DF94E213 /* AppState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		C4C4D50F068A917FF2E2D244 = {
+			isa = PBXGroup;
+			children = (
+				CFA91075BFDA9285EC23BAC3 /* App */,
+				D122514CBC7D925FC7FAB6DE /* SunariraTests */,
+				18FE72386F138E00B8F8B1B6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CB19DA77A32202BEE0A41ADF /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0214B471B3DB003D83825278 /* HotkeyRecorderRow.swift */,
+				B2A2F37AC22876540EB07A5E /* SettingsView.swift */,
+				A9DB3BD1E0D451C418AE3522 /* SettingsWindowController.swift */,
+				B3761FDCA330F14F052281B6 /* StatusItemController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		CFA91075BFDA9285EC23BAC3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EC15B3A5DF770CECCB2CE6BF /* AppDelegate.swift */,
+				16F3C3A148304A83FFE46E0E /* Info.plist */,
+				FBC84A9F316128F4734C8562 /* SunariraApp.swift */,
+				3F20320F0B226D3C3E3CBD1A /* Hotkeys */,
+				E167F1EE6E1388C8E4A92DBA /* Models */,
+				3C9C9E2F80299D4E538EC24F /* Services */,
+				7F9955E7F611DDF9F36C0910 /* State */,
+				DFD946075FE10FDA216A7787 /* Transform */,
+				CB19DA77A32202BEE0A41ADF /* UI */,
+				7334E0DC1A1F3DF6E4EC2FF0 /* Utilities */,
+			);
+			name = App;
+			path = Sources/App;
+			sourceTree = "<group>";
+		};
+		D122514CBC7D925FC7FAB6DE /* SunariraTests */ = {
+			isa = PBXGroup;
+			children = (
+				11E49E7759DD35AF0FA0A1B3 /* AppPreferencesModeTests.swift */,
+				B3BE06C02101AF1C15C19814 /* AppStateCycleAndLocalizationTests.swift */,
+				03DB2AE4D18202D08AB3C0F5 /* AppStatePersistenceTests.swift */,
+				5C869CA52748DFBE03D42187 /* ModelSelectionTests.swift */,
+				EB5FF63327A1A9417222A97A /* PromptBuilderTests.swift */,
+				0F23E6FE20CAF680AE20BDCD /* TransformServiceStabilityTests.swift */,
+			);
+			name = SunariraTests;
+			path = Tests/SunariraTests;
+			sourceTree = "<group>";
+		};
+		DFD946075FE10FDA216A7787 /* Transform */ = {
+			isa = PBXGroup;
+			children = (
+				B7C6D4E76601761BE06A06F4 /* CodexAppServerStdioEngine.swift */,
+				CD6261B0F871233321AD34AB /* CodexJSONRPCEngine.swift */,
+				91C3CC8DB7E500B6C60BB898 /* LocalStubEngine.swift */,
+				53761D282130333D82BDC9C4 /* PromptBuilder.swift */,
+				816F27FB79AF5D2804FDB26C /* TransformEngine.swift */,
+				7CEE87F2346BB99EAFA55D6E /* TransformService.swift */,
+			);
+			path = Transform;
+			sourceTree = "<group>";
+		};
+		E167F1EE6E1388C8E4A92DBA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1D248104915C6229E05E2987 /* AppPreferences.swift */,
+				92C23B8D63C8D25DC8005EDB /* Enums.swift */,
+				2CC6270D6650127F0BD184CA /* Hotkey.swift */,
+				BBFFD1716FDD09C1C4D98C49 /* TransformContext.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		138489AD97289F5DE31DC1CA /* Sunarira */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 74C5E11F54BF8D7691F31D4A /* Build configuration list for PBXNativeTarget "Sunarira" */;
+			buildPhases = (
+				97E54739250E6ECBCF23C26B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sunarira;
+			packageProductDependencies = (
+			);
+			productName = Sunarira;
+			productReference = 628EF3388D21C4DD541B2F56 /* Sunarira.app */;
+			productType = "com.apple.product-type.application";
+		};
+		35F7746F5522CA219CEF4529 /* SunariraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AB5054B8FB768470673D404 /* Build configuration list for PBXNativeTarget "SunariraTests" */;
+			buildPhases = (
+				AD1D64EF16AAE53B82205188 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E9C1A2B9672F0FB71CDC63F8 /* PBXTargetDependency */,
+			);
+			name = SunariraTests;
+			packageProductDependencies = (
+			);
+			productName = SunariraTests;
+			productReference = 17AD9E5CA4596DCB4165534D /* SunariraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7CCA1FF8CB1393EC6218BFB1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					138489AD97289F5DE31DC1CA = {
+						ProvisioningStyle = Automatic;
+					};
+					35F7746F5522CA219CEF4529 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 10A01F7949DD482487388BC2 /* Build configuration list for PBXProject "Sunarira" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C4C4D50F068A917FF2E2D244;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				138489AD97289F5DE31DC1CA /* Sunarira */,
+				35F7746F5522CA219CEF4529 /* SunariraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97E54739250E6ECBCF23C26B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DF95C41C9B22C23F48E58E7 /* AXTextService.swift in Sources */,
+				9D43EF2F5261F84546301E52 /* AccessibilityService.swift in Sources */,
+				14210F4685D0555A214636E6 /* AppCoordinator.swift in Sources */,
+				412313D2880B445D1A158E75 /* AppDelegate.swift in Sources */,
+				69CFA996A090AFE60A2EB897 /* AppLogger.swift in Sources */,
+				272724B4A1F6410F1E787A1B /* AppPreferences.swift in Sources */,
+				EE910753F6FB9621E93CA25C /* AppState.swift in Sources */,
+				DE1BAB146535351B08707F62 /* ClipboardFallbackService.swift in Sources */,
+				3A3A948494D9ED18831442F3 /* ClipboardService.swift in Sources */,
+				7A930E859DD845FC3037B7C9 /* CodexAppServerStdioEngine.swift in Sources */,
+				C6FA53BFA359466B9BC7B79C /* CodexJSONRPCEngine.swift in Sources */,
+				4F815D38B8FB28C5B2EB9B01 /* Enums.swift in Sources */,
+				730117355198E8848D9A02FE /* Hotkey.swift in Sources */,
+				0069B8085843A80C16BF8B61 /* HotkeyManager.swift in Sources */,
+				C9F6F48E96DE6DF7F4F89ECF /* HotkeyRecorderRow.swift in Sources */,
+				7806DE326FCBD5510E7583EC /* KeySender.swift in Sources */,
+				0D22908763C1CBBB061CC076 /* LocalStubEngine.swift in Sources */,
+				9D25632A9BC151ACCD81C863 /* ModelCatalogService.swift in Sources */,
+				040A801CE516CE0E5C4FBCDB /* PromptBuilder.swift in Sources */,
+				4A69ECD2EC46EFC76EF852B2 /* SettingsView.swift in Sources */,
+				443D9723904A04EA5EB8048F /* SettingsWindowController.swift in Sources */,
+				24C192CFD48A82000651BC93 /* StatusItemController.swift in Sources */,
+				E2315F5BF7B7DAC5BEFD69F7 /* SunariraApp.swift in Sources */,
+				5AB70A701F4D39676140A7FA /* TransformContext.swift in Sources */,
+				3560BB94FF6E714AC599507C /* TransformEngine.swift in Sources */,
+				6873001056B196C24BF665D5 /* TransformService.swift in Sources */,
+				4F3D8B46EB56146380F42FCC /* UserNotifier.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD1D64EF16AAE53B82205188 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E36F742F22D9A910B3FC53B7 /* AppPreferencesModeTests.swift in Sources */,
+				FC6055A93C279F7FFD605175 /* AppStateCycleAndLocalizationTests.swift in Sources */,
+				47FE1C1C7111586F479642D4 /* AppStatePersistenceTests.swift in Sources */,
+				A626220BEFE8EA0E6743C908 /* ModelSelectionTests.swift in Sources */,
+				AEDAC605AB570C3D21A1C12A /* PromptBuilderTests.swift in Sources */,
+				25B79026B56DAAE142072281 /* TransformServiceStabilityTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E9C1A2B9672F0FB71CDC63F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 138489AD97289F5DE31DC1CA /* Sunarira */;
+			targetProxy = F2173303B7BA7E29AAC1CAF8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		038CEE31E767AD9B67091D38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Sources/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_NAME = Sunarira;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		1AA57CF9A48F65D986344E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sunarira.app/Contents/MacOS/Sunarira";
+			};
+			name = Release;
+		};
+		2B1965DE22E6DACE59A5DB46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Sources/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_NAME = Sunarira;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		799FCE14758E3138F8AC7F0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.sunarira.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		80DB8E18E1CF3A69AA01250D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sunarira.app/Contents/MacOS/Sunarira";
+			};
+			name = Debug;
+		};
+		E96D5544979637BE862BA94A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.sunarira.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		10A01F7949DD482487388BC2 /* Build configuration list for PBXProject "Sunarira" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				799FCE14758E3138F8AC7F0F /* Debug */,
+				E96D5544979637BE862BA94A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		74C5E11F54BF8D7691F31D4A /* Build configuration list for PBXNativeTarget "Sunarira" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B1965DE22E6DACE59A5DB46 /* Debug */,
+				038CEE31E767AD9B67091D38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7AB5054B8FB768470673D404 /* Build configuration list for PBXNativeTarget "SunariraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80DB8E18E1CF3A69AA01250D /* Debug */,
+				1AA57CF9A48F65D986344E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7CCA1FF8CB1393EC6218BFB1 /* Project object */;
+}

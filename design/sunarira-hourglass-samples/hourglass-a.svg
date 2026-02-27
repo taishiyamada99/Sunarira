@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560">
+  <defs>
+    <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1F3A"/>
+      <stop offset="100%" stop-color="#1E4C86"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="560" fill="#f6f8fc"/>
+  <text x="36" y="50" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#0f172a">Hourglass Option A - Strong / Trustworthy</text>
+
+  <rect x="40" y="90" width="340" height="340" rx="84" fill="url(#gA)"/>
+  <g transform="translate(210,260)">
+    <path d="M-92 -84 h184 M-92 84 h184" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+    <path d="M-76 -84 c0 48 34 64 76 84 c42-20 76-36 76-84" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+    <path d="M-76 84 c0 -48 34 -64 76 -84 c42 20 76 36 76 84" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+    <path d="M-34 -28 h68 M-36 30 h72" stroke="#C6DCFF" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="7" fill="#ffffff"/>
+  </g>
+
+  <text x="468" y="100" font-family="Helvetica, Arial, sans-serif" font-size="21" fill="#334155">Menu bar samples</text>
+  <rect x="470" y="120" width="300" height="100" rx="16" fill="#fff" stroke="#d8dee8"/>
+  <text x="496" y="155" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#334155">Idle</text>
+  <g transform="translate(620,173)">
+    <path d="M-28 -16 h56 M-28 16 h56" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-22 -16 c0 10 10 14 22 16 c12-2 22-6 22-16 M-22 16 c0-10 10-14 22-16 c12 2 22 6 22 16" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <rect x="810" y="120" width="330" height="100" rx="16" fill="#fff" stroke="#d8dee8"/>
+  <text x="836" y="155" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#334155">Transforming (sand moving)</text>
+  <g transform="translate(980,173)">
+    <path d="M-28 -16 h56 M-28 16 h56" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-22 -16 c0 10 10 14 22 16 c12-2 22-6 22-16 M-22 16 c0-10 10-14 22-16 c12 2 22 6 22 16" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-2 -8 v12" stroke="#111827" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="0" cy="8" r="3" fill="#111827"/>
+  </g>
+</svg>

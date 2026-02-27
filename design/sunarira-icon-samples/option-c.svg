@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <rect width="1200" height="520" fill="#f8fafc"/>
+  <text x="40" y="52" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#111827">Option C - Minimal / Premium</text>
+
+  <rect x="40" y="90" rx="88" ry="88" width="340" height="340" fill="#111827"/>
+  <path d="M128 184 c24-36 64-52 104-44 c28 6 52 22 68 46 c-22 26-50 40-80 44 c-28 4-54 14-72 34 c23 35 61 52 102 46 c28-5 53-22 70-48" fill="none" stroke="#f8fafc" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="298" cy="149" r="8" fill="#f8fafc"/>
+
+  <rect x="480" y="120" rx="18" ry="18" width="300" height="110" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="508" y="160" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#334155">Menu bar: Idle</text>
+  <g transform="translate(640,183)">
+    <path d="M-42 -16 c10-14 28-20 46-14 c8 3 14 8 18 14 c-10 14-28 20-46 14 c-8-3-14-8-18-14 c10 14 28 20 46 14" fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <rect x="820" y="120" rx="18" ry="18" width="320" height="110" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="848" y="160" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#334155">Menu bar: Transforming</text>
+  <g transform="translate(970,176)">
+    <path d="M-24 -20 h48 M-24 20 h48 M-20 -20 c0 15 12 20 20 24 c8-4 20-9 20-24 M-20 20 c0-15 12-20 20-24 c8 4 20 9 20 24" fill="#fff" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="3" fill="#0f172a"/>
+  </g>
+</svg>

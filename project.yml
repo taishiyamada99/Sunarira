@@ -1,0 +1,48 @@
+name: Sunarira
+options:
+  minimumXcodeGenVersion: 2.42.0
+  deploymentTarget:
+    macOS: "13.0"
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    MACOSX_DEPLOYMENT_TARGET: 13.0
+    PRODUCT_BUNDLE_IDENTIFIER: dev.sunarira.app
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 0.2.0
+targets:
+  Sunarira:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/App
+    info:
+      path: Sources/App/Info.plist
+      properties:
+        CFBundleDisplayName: Sunarira
+        CFBundleName: Sunarira
+        LSUIElement: true
+    settings:
+      base:
+        PRODUCT_NAME: Sunarira
+  SunariraTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests/SunariraTests
+    dependencies:
+      - target: Sunarira
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Sunarira.app/Contents/MacOS/Sunarira"
+schemes:
+  Sunarira:
+    build:
+      targets:
+        Sunarira: all
+        SunariraTests: [test]
+    test:
+      targets:
+        - SunariraTests
